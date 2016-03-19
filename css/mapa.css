@@ -43,7 +43,7 @@ html {
 }
 
 #scroll-filtros #comisarias-togglers {
-  height: 400px;
+  height: 300px;
 }
 
 .mapa-y-filtros {
@@ -117,6 +117,7 @@ html {
 
 #sidebar-padder {
   padding: 20px;
+  background: white;
 }
 
 svg {

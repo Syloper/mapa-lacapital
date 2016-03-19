@@ -106,6 +106,8 @@
                     <button data-id="27" type="button">32</button>
                     <button data-id="9" type="button">33</button>
                   </div>
+
+                  <div id="sidebar-padder"></div>
                 </div>
               </div>
             <div class="col-sm-12 mapa-y-filtros">
@@ -119,7 +121,7 @@
                   <h5 class="titulo-color">Mapa <small>- Hacé click en los puntos para más detalles.</small></h5>
 
                   <div>
-                    <h4><span id="filtros-fechadesde">16 de Junio</span> <small>al</small> <span id="filtros-fechahasta">23 de Noviembre</span> <small>-</small> <span id="cantidad-puntos"></span> <small>homicidios</small> <small>-</small> <span id="porcentaje">55</span>% <small>del total</small></h4>
+                    <h4><span id="filtros-fechadesde">16 de Junio de 2013</span> <small>al</small> <span id="filtros-fechahasta">21 de Diciembre de 2014</span> <small>-</small> <span id="cantidad-puntos"></span> <small>homicidios</small> <small>-</small> <span id="porcentaje">55</span>% <small>del total</small></h4>
                     <h5 id="textoFiltros"></h5>
                   </div>
 
@@ -140,10 +142,10 @@
           </div>
 
           <script type="text/html" id="sideTemplate">
-              <h4><img src="images/cruz.png" style="height: 16px"> <%- victimas %></h4>
+              <h5><img src="images/cruz.png" style="height: 16px"> <%- victimas %></h5>
               <h5><img src="images/fecha.png" style="height: 16px"> <%- fecha %></h5>
               <h5><img src="images/map-pin.png" style="height: 16px"> <%- direccion %></h5>
-              <h5><img src="images/comisaria.png" style="height: 16px"> <%- comisaria %></h5>
+              <!--<h5><img src="images/comisaria.png" style="height: 16px"> <%- comisaria %></h5>-->
               <p><img src="images/arma.png" style="height: 16px"> <%- resumen %></p>
               <a href="<%- link %>" target="_blank"><i class="fa fa-external-link"></i> Nota en LaCapital.com.ar</a>
               <div class="alert alert-info">
@@ -190,13 +192,14 @@
 
             moment.lang("es");
             var d3map = {};
-            var TOTAL_PUNTOS = 214; //hardcodeado por ahora
+            //var TOTAL_PUNTOS = 214; //hardcodeado por ahora
+            var TOTAL_PUNTOS = 413; //Agregado 2014
             var DEBUG_LEVEL = false;
 
             d3map.brush = null;
             d3map.cantidadPuntos = 0;
             d3map.fechaInicio = new Date(2013, 0, 1, 0, 0, 0, 0);
-            d3map.fechaFin = new Date(2013, 11, 31, 23, 59, 59, 0);
+            d3map.fechaFin = new Date(2014, 12, 22, 23, 59, 59, 0);
             d3map.cursorAutoPlay = moment(d3map.fechaInicio).add('days', 1).toDate();
             d3map.enAutoPlay = false;
             d3map.layers = {
@@ -242,8 +245,8 @@
                   d3map.mostrarPuntosFiltrados();
                   d3map.actualizarTextoFiltros();
                   var s = d3map.brush.extent();
-                  $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM"));
-                  $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM"));
+                  $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM [de] YYYY"));
+                  $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM [de] YYYY"));
 
                 }
                 , 25
@@ -342,7 +345,7 @@
                 var fechaPunto = d3map.obtenerFechaPunto(d);
                 var enFecha = rangoFechas[0] <= fechaPunto && fechaPunto <= rangoFechas[1];
                 var enComisaria = false;
-
+                
                 var nro = d.properties.comisaria.replace("ª", "");
                 if (comisariasSeleccionadas.length > 0) {
                   var indiceEnArray = comisariasSeleccionadas.indexOf(nro);
@@ -352,6 +355,8 @@
                 } else {
                   enComisaria = true;
                 }
+                
+
 
                 return enFecha && enComisaria;
               });
@@ -392,7 +397,7 @@
                 var map = new L.Map('map', {
                   zoomControl: false,
                   center: [-32.9598, -60.6423],
-                  zoom: 13,
+                  zoom: 12,
                   zoomAnimation: false
                 });
 
@@ -564,10 +569,13 @@
                 }
 
                 // Agregar la capa SVG para los puntos a Leaflet
-                var svg = d3.select(map.getPanes().overlayPane).append("svg").attr("id", "svg-puntos"),
-                    g = svg.append("g").attr("class", "leaflet-zoom-hide");
+                var svg = d3.select(map.getPanes().overlayPane).append("svg").attr("id", "svg-puntos"),g = svg.append("g").attr("class", "leaflet-zoom-hide");
 
-                d3.json("homicidios2013.json", function(collection) {
+                d3.json("homicidios2013-2014.json", function(collection) {
+
+                  //Juli test
+                  //console.log(collection.features);
+                  //console.log(collection.features);
 
                   // Dibuja los puntos sobre el mapa de Leaflet con D3.js
                   var transform = d3.geo.transform({point: projectPoint});
@@ -595,7 +603,8 @@
                         comisaria: d.properties.comisaria,
                         link: d.properties.link
                     };
-                    document.getElementById('sidebar-padder').innerHTML = _.template(tpl, data);
+                    //document.getElementById('sidebar-padder').innerHTML = _.template(tpl, data);
+                     $("#sidebar-padder").html(_.template(tpl,data));
                     $("#sidebar").fadeIn();
                   });
 
@@ -617,8 +626,8 @@
                     d3map.brush = brush;
                   }
                   var s = brush.extent();
-                  $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM"));
-                  $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM"));
+                  $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM [de] YYYY"));
+                  $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM [de] YYYY"));
                   
                   d3map.mostrarPuntosFiltrados();
                   d3map.actualizarTextoFiltros();
