@@ -762,7 +762,27 @@
                     return calculatePointRadius(me.map.getZoom());
                   });
 
-                  if (true) {
+                   
+
+                    // Obtener los puntos y asignar una clase
+                    me.featurePuntos = g.selectAll("#svg-puntos .circle")
+                      .data(collection.features)
+                      .enter()
+                      .append("g")
+                      .append("path")
+                      .attr("class", function(d) {
+                         if(d.properties.fecha.indexOf("\/14")>0){
+                          //console.log("Es 2014:"+d.properties.fecha);
+                          return "circle2014 circle";
+                        }else{
+                          return "circle";
+                        }
+                      })
+                      .attr("id", function(d) {
+                        return "point-" + d.properties.cartodb_id;
+                      });
+                    me.addClickListener();
+                        /*
                     // Obtener los puntos y asignar una clase
                     me.featurePuntos = g.selectAll("#svg-puntos .circle")
                       .data(collection.features)
@@ -773,25 +793,8 @@
                       .attr("id", function(d) {
                         return "point-" + d.properties.cartodb_id;
                       });
-
                     me.addClickListener();
-                  } else {
-
-                    me.featurePuntos = g.selectAll("#svg-puntos .circle")
-                      .data(collection.features)
-                      .enter()
-                      .append("svg:image")
-                      .attr("xlink:href", "images/grave.png")
-                      .attr("width", "20")
-                      .attr("height", "20")
-                      .attr("class", "circle")
-                      .attr("id", function(d) {
-                        return "point-" + d.properties.cartodb_id;
-                      });
-
-                    me.addClickListener();
-
-                  }
+                  */
                   
                   // Use Leaflet to implement a D3 geometric transformation.
                   function projectPoint(x, y) {

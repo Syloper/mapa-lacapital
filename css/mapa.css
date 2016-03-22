@@ -210,6 +210,7 @@ svg {
   cursor: pointer;
   fill: rgba(200,0,0,.7);
 }
+
 .circle.selected:hover {
   opacity: 1;
   fill: #FFD014;
@@ -221,6 +222,11 @@ svg {
   opacity: 1;
   fill: #FFD014;
   stroke: white;
+}
+
+.circle2014 {
+  fill: rgba(0,0,100,.7);
+  stroke: blue;
 }
 
 #timeline { }

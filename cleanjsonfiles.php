@@ -14,7 +14,11 @@ foreach ($array->features as $key => $value) {
 	$lat = (float) str_replace('"', '', $value->properties->lat);
 	$lng = (float) str_replace('"', '', $value->properties->lng);
 
-	$value->properties->comisaria = "sub2";
+	$comisaria = str_replace("SUBCRIA", "", $value->properties->Dependencia);
+	$comisaria = str_replace("CRIA", "", $comisaria);
+
+	$comisaria = trim($comisaria);
+	$value->properties->comisaria = $comisaria;
 	//print_r($value->properties->lat);
 	$value->geometry->type = "Point";
 	$value->geometry->coordinates = array($lng,$lat);
