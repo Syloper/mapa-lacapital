@@ -176,7 +176,7 @@
                     <div class="bottom-right">
 
                       <div class="texto-animado">
-                        <h4><small>Entre el</small> <span id="filtros-fechadesde">16 de Junio</span> de 2013 <small>y el</small> <span id="filtros-fechahasta">21 de Diciembre</span> <small> de 2014 se cometieron </small><span id="cantidad-puntos"></span> <small>homicidios</small><small><span id="texto-comisarias"></span>, que representan un </small><span id="porcentaje">100</span>% <small>del total.</small></h4>
+                        <h4><small>Entre el</small> <span id="filtros-fechadesde">16 de Junio de 2013</span> <small>y el</small> <span id="filtros-fechahasta">21 de Diciembre de 2014</span> <small>  se cometieron </small><span id="cantidad-puntos"></span> <small>homicidios</small><small><span id="texto-comisarias"></span>, que representan un </small><span id="porcentaje">100</span>% <small>del total.</small></h4>
                       </div>
 
                       <div id="timeline"></div>
@@ -331,8 +331,8 @@
 	                  me.mostrarPuntosFiltrados();
 	                  me.actualizarTextoFiltros();
 	                  var s = me.brush.extent();
-	                  $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM"));
-	                  $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM"));
+	                  $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM [de] YYYY"));
+	                  $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM [de] YYYY"));
 
 	                }
 	                , 25
@@ -811,8 +811,8 @@
                       me.brush = brush;
                     }
                     var s = me.brush.extent();
-                    $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM"));
-                    $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM"));
+                    $("#filtros-fechadesde").html(moment(s[0]).format("D [de] MMMM [de] YYYY"));
+                    $("#filtros-fechahasta").html(moment(s[1]).format("D [de] MMMM [de] YYYY"));
                     
                     me.mostrarPuntosFiltrados();
                     me.actualizarTextoFiltros();
